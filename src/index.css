@@ -11,3 +11,84 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+table{
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid #eee;
+}
+thead th{
+  color:#999;
+}
+thead th:nth-child(1) {
+  width: 7%;
+}
+
+thead th:nth-child(2) {
+  width: 40%;
+}
+
+thead th:nth-child(3) {
+  width: 7%;
+}
+
+thead th:nth-child(4) {
+  width: 7%;
+}
+thead th:nth-child(5) {
+  width: 7%;
+}
+thead th:nth-child(6) {
+  width: 7%;
+}
+
+th, td {
+  border-collapse: collapse;
+  border: 3px solid #eee;
+  padding:4px 8px;
+}
+tbody td {
+  color:#333;
+  text-align: center;
+}
+.red{
+  color:red;
+}
+.pointer{
+  cursor: pointer;
+}
+.btn__delete{
+  padding: 0;
+  font-weight: 600;
+  appearance: none;
+  border: 0;
+  border-radius: 0;
+  background-color:transparent;
+  color:red;
+  cursor: pointer;
+  transition: all .5s;
+  border-bottom: solid 2px transparent;
+}
+.btn__delete:hover{
+  
+  transition: all .5s;
+  border-bottom: solid 2px red;
+  
+}
+.btn__delete:active{
+  opacity: .8;
+}
+
+.add__btn{
+  margin: 15px;
+  padding: 12px 12px;
+  font-weight: 600;
+  appearance: none;
+  border: 0;
+  border-radius: 6px;
+  background-color:rgb(12, 12, 226);
+  color:#eee;
+  cursor: pointer;
+  transition: all .5s;
+  border: 1px solid rgb(38, 60, 172);
+}
