@@ -19,7 +19,7 @@ interface LargeTableState {
 
 export function useLargeTable(): LargeTableState {
   const [rows, setRows] = useState<LargeTableData[]>(() =>
-    Array(10).fill(0).map<LargeTableData>((v, i) => ({
+    Array(10000).fill(0).map<LargeTableData>((v, i) => ({
       id: getId(i),
       name: getName(),
       canRemove: false,
@@ -50,19 +50,7 @@ export function useLargeTable(): LargeTableState {
   }, []);
 
   const increment = useCallback((id: string) => {
-    rows.map(row => {
-      if (row.id === id) {
-        const objIndex = rows.findIndex(obj => obj.id === row.id);
-        const updatedObj = { ...rows[objIndex], counter: row.counter === row.maxCount ? row.counter : ++row.counter };
-        const updatedProjects = [
-          ...rows.slice(0, objIndex),
-          updatedObj,
-          ...rows.slice(objIndex + 1),
-        ];
-        setRows(updatedProjects);
-      }
-
-    })
+    setRows(rows => rows.map(row => row.id === id && row.counter < row.maxCount ? ({ ...row, counter: row.counter + 1 }) : row));
   }, []);
 
   return { rows, addRow, removeRow, increment };

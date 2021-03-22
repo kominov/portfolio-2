@@ -1,5 +1,5 @@
 import React from 'react';
-import { MyDate } from './components/MyDate';
+import { Table } from './components/Table';
 
 
 
@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="App">
-      <MyDate />
+      <Table />
     </div>
   );
 }
