@@ -3,8 +3,7 @@ import { useCallback, useState } from "react";
 export interface LargeTableData {
   id: string;
   name: string;
-  timeOfAdded: number
-  // createDate: string;
+  updateDate: Date;
   counter: number;
   maxCount: number;
   canRemove: boolean;
@@ -25,8 +24,7 @@ export function useLargeTable(): LargeTableState {
       canRemove: false,
       counter: 0,
       maxCount: (i % 17) + 3,
-      timeOfAdded: Date.now(),
-      // createDate: new Date(Date.now() - 144000000 + i * 60000).toISOString(),
+      updateDate: new Date(Date.now() - 144000000 + i * 60000),
     }))
   );
 
@@ -36,8 +34,7 @@ export function useLargeTable(): LargeTableState {
       {
         id: getId(random(0, 10000)),
         name: getName(),
-        timeOfAdded: Date.now(),
-        // createDate: new Date().toISOString(),
+        updateDate: new Date(),
         maxCount: random(0, 20),
         counter: 0,
         canRemove: true,
@@ -50,7 +47,7 @@ export function useLargeTable(): LargeTableState {
   }, []);
 
   const increment = useCallback((id: string) => {
-    setRows(rows => rows.map(row => row.id === id && row.counter < row.maxCount ? ({ ...row, counter: row.counter + 1 }) : row));
+    setRows(rows => rows.map(row => row.id === id && row.counter < row.maxCount ? ({ ...row, counter: row.counter + 1, updateDate: new Date() }) : row));
   }, []);
 
   return { rows, addRow, removeRow, increment };

@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 interface TimeOfAddedProps {
-    timeOfAdded: number
+    timeOfAdded: Date;
 }
 
 
 export const TimeOfAdded: React.FC<TimeOfAddedProps> = ({ timeOfAdded }) => {
-    const [addedTime, setAddedTime] = useState<string|undefined>(`Добавлено:\r\n сейчас`);
 
-    useEffect(() => {
-        setInterval(() => {
-            setAddedTime(timeCounter(timeOfAdded))
-        }, 30000)
-    }, [])
+
+
 
 
     function declOfNum(titles: string[]) {
@@ -23,10 +19,10 @@ export const TimeOfAdded: React.FC<TimeOfAddedProps> = ({ timeOfAdded }) => {
         }
 
     }
-    const timeCounter = (timeOfAdded: number) => {
+    const timeCounter = useCallback((timeOfAdded: Date) => {
         const arrayOfMinutes = ["минуту", "минуты", "минут"];
         const arrayOfHours = ["час", "часа", "часов"];
-        let timeWasPassed = Date.now() - timeOfAdded;
+        let timeWasPassed = Date.now() - timeOfAdded.getTime();
         let minutesWasPass = Math.floor(timeWasPassed / (1000 * 60));
         let hoursWasPass = Math.floor(timeWasPassed / (1000 * 60 * 60));
 
@@ -42,7 +38,21 @@ export const TimeOfAdded: React.FC<TimeOfAddedProps> = ({ timeOfAdded }) => {
             return (`Добавлено:\r\n ${hoursWasPass} ${hours(hoursWasPass)} назад`)
         }
         if (hoursWasPass >= 24) return (`Добавлено:\r\n ${new Date(timeOfAdded).toLocaleString()}`);
-    }
+    }, []);
+    const [addedTime, setAddedTime] = useState<string | undefined>(timeCounter(timeOfAdded));
+
+    useEffect(() => {
+        setAddedTime(timeCounter(timeOfAdded));
+        let timer = setInterval(() => {
+            setAddedTime(timeCounter(timeOfAdded))
+
+            console.log("Effect" + addedTime);
+            
+        }, 10000);
+        return () => clearInterval(timer);
+    }, [timeCounter, timeOfAdded])
+
+    console.log("root" + addedTime);
 
     return (<>
         {addedTime}

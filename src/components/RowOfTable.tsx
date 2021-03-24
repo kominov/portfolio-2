@@ -11,7 +11,7 @@ interface RowOfTableProps {
 export const RowOfTable: React.FC<RowOfTableProps> = React.memo(({ row, increment, removeRow }) => {
     return (<>
         <tr>
-            <td><TimeOfAdded timeOfAdded={row.timeOfAdded} /> </td>
+            <td><TimeOfAdded timeOfAdded={row.updateDate} /> </td>
             <td>{row.name}</td>
             <td>{row.counter}</td>
             <td>{row.maxCount}</td>
