@@ -45,15 +45,9 @@ export const TimeOfAdded: React.FC<TimeOfAddedProps> = ({ timeOfAdded }) => {
         setAddedTime(timeCounter(timeOfAdded));
         let timer = setInterval(() => {
             setAddedTime(timeCounter(timeOfAdded))
-
-            console.log("Effect" + addedTime);
-            
         }, 10000);
         return () => clearInterval(timer);
     }, [timeCounter, timeOfAdded])
-
-    console.log("root" + addedTime);
-
     return (<>
         {addedTime}
     </>)

@@ -10,11 +10,24 @@ export interface LargeTableData {
 }
 
 interface LargeTableState {
-  rows: LargeTableData[];
+  getRows: (query: RowsQuery) => RowsResult;
   addRow: () => void;
   removeRow: (id: string) => void;
   increment: (id: string) => void;
 }
+
+export interface RowsQuery {
+  limit: number; // кол-во строк на странице
+  offset: number; // пропускаем кол-во строк
+  searchText?: string;
+}
+
+export interface RowsResult {
+  rows: LargeTableData[];
+  total: number; // всего строк
+  query: RowsQuery;
+}
+
 
 export function useLargeTable(): LargeTableState {
   const [rows, setRows] = useState<LargeTableData[]>(() =>
@@ -50,7 +63,12 @@ export function useLargeTable(): LargeTableState {
     setRows(rows => rows.map(row => row.id === id && row.counter < row.maxCount ? ({ ...row, counter: row.counter + 1, updateDate: new Date() }) : row));
   }, []);
 
-  return { rows, addRow, removeRow, increment };
+  const getRows = useCallback((query: RowsQuery) => {
+    const { limit, offset } = query;
+    return { rows: rows.slice(offset, offset + limit), limit, offset, total: rows.length };
+  }, [])
+
+  return { getRows, addRow, removeRow, increment };
 }
 
 function random(min: number, max: number) {
