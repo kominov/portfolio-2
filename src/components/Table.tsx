@@ -1,9 +1,11 @@
 import React, { useMemo, useState } from 'react'
+import { PageSize } from '../constans';
 import { useLargeTable, RowsQuery } from '../hooks/useLargeTable'
+import { Paginator } from './Paginator/Paginator';
 import { RowOfTable } from './RowOfTable';
 
 
-const PageSize = 20;
+
 
 export const Table: React.FC = () => {
 
@@ -11,8 +13,8 @@ export const Table: React.FC = () => {
     const [query, setQuery] = useState<RowsQuery>({ limit: PageSize, offset: 0 });
 
     const rowsResult = useMemo(() => getRows(query), [getRows, query]);
-    const { query: { limit, offset }, total, rows } = rowsResult;
-
+    const { limit, offset, totalRows, rows } = rowsResult;
+    console.log(rows)
     return (<>
         <table>
             <thead>
@@ -31,9 +33,11 @@ export const Table: React.FC = () => {
                 })}
             </tbody>
         </table>
-        <Paging result={rowsResult} onChange={setQuery}/>
-        pages count: {Math.ceil(total / limit)}<br></br>
-        current page: {offset / limit + 1}<br></br>
-        <button className="add__btn" onClick={e => addRow()}>Добавить строку</button>
+        <Paginator result={rowsResult} onChange={setQuery} />
+        {Math.ceil(totalRows / limit) === Math.floor(offset / limit + 1) &&
+            (<button className="add__btn" onClick={e => addRow()}>Добавить строку</button>)
+            
+        }
+
     </>)
 }

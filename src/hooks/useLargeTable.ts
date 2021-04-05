@@ -24,14 +24,15 @@ export interface RowsQuery {
 
 export interface RowsResult {
   rows: LargeTableData[];
-  total: number; // всего строк
-  query: RowsQuery;
+  totalRows: number; // всего строк
+  limit: number; // кол-во строк на странице
+  offset: number;// пропускаем кол-во строк
 }
 
 
 export function useLargeTable(): LargeTableState {
   const [rows, setRows] = useState<LargeTableData[]>(() =>
-    Array(10000).fill(0).map<LargeTableData>((v, i) => ({
+    Array(20).fill(0).map<LargeTableData>((v, i) => ({
       id: getId(i),
       name: getName(),
       canRemove: false,
@@ -65,8 +66,8 @@ export function useLargeTable(): LargeTableState {
 
   const getRows = useCallback((query: RowsQuery) => {
     const { limit, offset } = query;
-    return { rows: rows.slice(offset, offset + limit), limit, offset, total: rows.length };
-  }, [])
+    return { rows: rows.slice(offset, offset + limit), limit, offset, totalRows: rows.length };
+  }, [rows])
 
   return { getRows, addRow, removeRow, increment };
 }
